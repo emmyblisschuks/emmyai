@@ -4,7 +4,9 @@ import os
 
 app = Flask(__name__)
 
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")client = Groq(api_key=GROQ_API_KEY)
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")
+
+client = Groq(api_key=GROQ_API_KEY)
 
 @app.route("/")
 def index():
@@ -16,7 +18,7 @@ def chat():
         body = request.json
         messages = body.get("messages", [])
 
-        history = [{"role": "system", "content": "You are EmmyAI, a helpful and friendly assistant. Always be concise and clear."}]
+        history = [{"role": "system", "content": "You are EmmyAI, a helpful and friendly assistant."}]
 
         for msg in messages:
             role = "user" if msg["role"] == "user" else "assistant"
@@ -28,7 +30,6 @@ def chat():
         )
 
         reply = response.choices[0].message.content
-        print("SUCCESS:", reply[:50])
         return jsonify({"success": True, "reply": reply})
 
     except Exception as e:
